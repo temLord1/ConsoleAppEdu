@@ -55,8 +55,10 @@ namespace ConsoleAppEdu
         // Возвращает строку, в которой все запятые заменяются на точки, для корректной конвертации.
         static string CommaToPeriod(string str)
         {
-            if (str.Contains(",") {
-                return str.Replace(",", ".");
+            if (str.Contains(","))
+            {
+                string result = str.Replace(",", ".");
+                return result;
             }
             else
             {
