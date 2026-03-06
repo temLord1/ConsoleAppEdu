@@ -25,8 +25,8 @@ namespace ConsoleAppEdu
             WriteLine($"ln = {Round(Log(x), 3)}");
             WriteLine($"log10 = {Round(Log10(x), 3)}");
             WriteLine($"Экспонента: {E}");
-            WriteLine($"Число {x} в двоичной системе: {Convert.ToString(ToInt32(Abs(x)), 2)}");
-            WriteLine($"Число {y} в двоичной системе: {Convert.ToString(ToInt32(Abs(y)), 2)}");
+            WriteLine($"Число {x} в двоичной системе: {Convert.ToString(ToInt16(Abs(x)), 2)}");
+            WriteLine($"Число {y} в двоичной системе: {Convert.ToString(ToInt16(Abs(y)), 2)}");
 
             // Работа 2.2
             double numeratorP1 = (Pow(x * y, 2)) * (y - x);
@@ -42,28 +42,20 @@ namespace ConsoleAppEdu
         // Возвращает 0, если не удалось перевести значение или пользовательский ввод оказался неудачным.
         static double SaveConvert(string str)
         {
-            if (double.TryParse(CommaToPeriod(str), out double result))
+            if (double.TryParse(PerToCom(str), out double result))
             {
-                return double.Parse(CommaToPeriod(str));
+                return double.Parse(PerToCom(str));
             }
             else
             {
                 return 0.0;
             }
         }
-        // Статический метод для проверки на наличия случайного ввода запятой пользователем вместо точки.
-        // Возвращает строку, в которой все запятые заменяются на точки, для корректной конвертации.
-        static string CommaToPeriod(string str)
+        // Статичный метод для перевода точки в запятую при ошибки пользователя при вводе чисел.
+        // Возвращет измененную/исходную строку.
+        static string PerToCom(string str)
         {
-            if (str.Contains(","))
-            {
-                string result = str.Replace(",", ".");
-                return result;
-            }
-            else
-            {
-                return str;
-            }
+            return str.Replace(".", ","); 
         }
     }
 }
