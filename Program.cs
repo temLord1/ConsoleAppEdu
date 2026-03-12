@@ -3,6 +3,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Runtime.Remoting.Messaging;
 using System.Security.Policy;
 using static System.Console;
+using static System.Math;
 
 
 namespace ConsoleAppEdu
@@ -12,48 +13,37 @@ namespace ConsoleAppEdu
         static void Main(string[] args)
         {
 
-            WriteLine("Введите три числа x, y, z: ");
-            double x = RepeatRead();
-            double y = RepeatRead();
-            double z = RepeatRead();
-            double mean = (x + y + z) / 3;
-            double squareSum = (x * z) + (y * y) + (z * z);
+            WriteLine("Введите три числа, длины сторон треугольника a, b, c: ");
+            double a = RepeatRead();
+            double b = RepeatRead();
+            double c = RepeatRead();
+            double aPif = Sqrt(Pow(c, 2) + Pow(b, 2));
+            double bPif = Sqrt(Pow(a, 2) + Pow(c, 2));
+            double cPif = Sqrt(Pow(a, 2) + Pow(b, 2));
 
+            if (a > (b + c) || b > (a + c) || c > (a + b))
+            {
+                WriteLine("Треугольника с такими сторонами не существует!");
+            }
 
-            if (x > y && x > z) // max x
+            else
             {
-                if (y < z) // min y
+                if (a == b || a == c || b == c)
                 {
-                    WriteLine($"!{mean}!, !{squareSum}!, {z}");
+                    if (a == b && a == c)
+                    {
+                        WriteLine("Треугольник равносторонний!");
+                    }
+                    else
+                    {
+                        WriteLine("Треугольник равнобедренный!");
+                    }
                 }
-                else // min z
+                if (a == aPif || b == bPif || c == cPif)
                 {
-                    WriteLine($"!{mean}!, {y}, !{squareSum}!");
+                    WriteLine("Треугольник прямоугольный!");
                 }
             }
-            if (y > x && y > z) // max y
-            {
-                if (x < z) // min x
-                {
-                    WriteLine($"!{squareSum}!, !{mean}!, {z}"); ;
-                }
-                else // min z
-                {
-                    WriteLine($"{x}, !{mean}!, !{squareSum}!");
-                }
-            }
-            if (z > x && z > y) // max z
-            {
-                if (x < y) // min x
-                {
-                    WriteLine($"!{squareSum}!, {y}, !{mean}!");
-                }
-                else // min y
-                {
-                    WriteLine($"{x}, !{squareSum}!, !{mean}!");
-                }
-            }
-            Write("\n---\tФлажками \"!\" обозначены замененные числа!\t---\n");
             ReadKey();
         }
 
