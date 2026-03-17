@@ -13,37 +13,12 @@ namespace ConsoleAppEdu
         static void Main(string[] args)
         {
 
-            WriteLine("Введите три числа, длины сторон треугольника a, b, c: ");
-            double a = RepeatRead();
-            double b = RepeatRead();
-            double c = RepeatRead();
-            double aPif = Sqrt(Pow(c, 2) + Pow(b, 2));
-            double bPif = Sqrt(Pow(a, 2) + Pow(c, 2));
-            double cPif = Sqrt(Pow(a, 2) + Pow(b, 2));
-
-            if (a > (b + c) || b > (a + c) || c > (a + b))
-            {
-                WriteLine("Треугольника с такими сторонами не существует!");
-            }
-
-            else
-            {
-                if (a == b || a == c || b == c)
-                {
-                    if (a == b && a == c)
-                    {
-                        WriteLine("Треугольник равносторонний!");
-                    }
-                    else
-                    {
-                        WriteLine("Треугольник равнобедренный!");
-                    }
-                }
-                if (a == aPif || b == bPif || c == cPif)
-                {
-                    WriteLine("Треугольник прямоугольный!");
-                }
-            }
+            WriteLine("Введите аргумент x: ");
+            double x = RepeatRead();
+            double numenator = Abs(Sin(Sqrt(10.5 * x)));
+            double denominator = Pow(x, 2.0 / 3.0) - 0.143;
+            double result = numenator / denominator;
+            WriteLine(result);
             ReadKey();
         }
 
