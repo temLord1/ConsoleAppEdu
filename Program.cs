@@ -12,57 +12,44 @@ namespace ConsoleAppEdu
     {
         static void Main(string[] args)
         {
-            WriteLine("Введите три числа, коэффициенты уравнения (ax^4 + bx^2 + c): ");
+
+            WriteLine("Введите три числа, длины сторон треугольника a, b, c: ");
             double a = RepeatRead();
             double b = RepeatRead();
             double c = RepeatRead();
-            double t1, t2, x1, x2;
+            double aPif = Sqrt(Pow(c, 2) + Pow(b, 2));
+            double bPif = Sqrt(Pow(a, 2) + Pow(c, 2));
+            double cPif = Sqrt(Pow(a, 2) + Pow(b, 2));
+            double epsilon = 1e-10;
 
-            if (a == 0)
+            if (a > (b + c) || b > (a + c) || c > (a + b))
             {
-                x1 = Sqrt(-c / b);
-                if (x1 != 0)
-                {
-                    WriteLine($"Корни уравнения: ±{x1}");
-                }
-                else
-                {
-                    WriteLine("Корень уравнения: 0");
-                }
+                WriteLine("Треугольника с такими сторонами не существует!");
             }
 
             else
             {
-                double D = (b * b) - 4 * a * c;
-                if (D >= 0)
+                if (a == b || a == c || b == c)
                 {
-                    t1 = (-b + Sqrt(D)) / 2 * a;
-                    t2 = (-b - Sqrt(D)) / 2 * a;
-                    x1 = Sqrt(t1);
-                    x2 = Sqrt(t2);
-                    if (t1 > 0 && t2 > 0)
+                    if (a == b && a == c)
                     {
-                        WriteLine($"Корни уравнения: ±{x1}, ±{x2}");
+                        WriteLine("Треугольник равносторонний!");
                     }
-                    else if (t1 == 0)
+                    if (a - aPif < epsilon || b - bPif <= epsilon || c - cPif <= epsilon)
                     {
-                        WriteLine($"Корни уравнения: 0, ±{x2}");
+                        WriteLine("Треугольник прямоугольный и равнобедренный!!");
                     }
-                    else if (t2 == 0)
+                    else
                     {
-                        WriteLine($"Корни уравнения: ±{x1}, 0");
-                    }
-                    else if (t1 < 0 || t2 < 0)
-                    {
-                        WriteLine("Корней нет!");
+                        WriteLine("Треугольник равнобедренный!");
                     }
                 }
-
-                else
+                if (a - aPif < epsilon || b - bPif <= epsilon || c - cPif <= epsilon)
                 {
-                    WriteLine("Корней нет!");
+                    WriteLine("Треугольник прямоугольный!");
                 }
             }
+            ReadKey();
         }
 
 
