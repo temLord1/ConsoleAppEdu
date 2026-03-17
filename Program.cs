@@ -2,93 +2,136 @@
 using System.Diagnostics.Eventing.Reader;
 using System.Runtime.Remoting.Messaging;
 using System.Security.Policy;
-using static System.Console;
-using static System.Math;
 
 
 namespace ConsoleAppEdu
 {
-    internal class Program
+
+    public class Triangle
     {
-        static void Main(string[] args)
+        public double a { get; private set; }
+        public double b { get; private set; }
+        public double c { get; private set; }
+
+        public Triangle(double side_a, double side_b, double side_c)
         {
+            a = side_a;
+            b = side_b;
+            c = side_c;
+        }
 
-            WriteLine("Введите три числа, длины сторон треугольника a, b, c: ");
-            double a = RepeatRead();
-            double b = RepeatRead();
-            double c = RepeatRead();
-            double aPif = Sqrt(Pow(c, 2) + Pow(b, 2));
-            double bPif = Sqrt(Pow(a, 2) + Pow(c, 2));
-            double cPif = Sqrt(Pow(a, 2) + Pow(b, 2));
-            double epsilon = 0.01;
-            string output = "";
-            bool isosceles = false;
+        public bool IsValid()
+        {
+            return (a + b > c) && (c + a > b) && (c + b > a);
+        }
 
-            if (a > (b + c) || b > (a + c) || c > (a + b))
-            {
-                output = "Треугольника с такими сторонами не существует!";
-            }
+        public bool IsEquilateral()
+        {
+            return (a == b && b == c);
+        }
+
+        public bool IsIsosceles()
+        {
+            return !IsEquilateral() && (a == b || a == c || b == c);
+        }
+
+        public bool IsRightTriangle()
+        {
+            double pif_a = Math.Sqrt(b * b + c * c);
+            double pif_b = Math.Sqrt(a * a + c * c);
+            double pif_c = Math.Sqrt(a * a + b * b);
+            double epsilon = 0.001;
+
+            return Math.Abs(a - pif_a) < epsilon || Math.Abs(b - pif_b) < epsilon || Math.Abs(c - pif_c) < epsilon;
+        }
+
+        public string GetInfo()
+        {
+            if (!IsValid()) return "Треугольник с такими сторонами не существует!";
 
             else
             {
-                if (a == b || a == c || b == c)
+                string info = "Данный треугольник существует и является ";
+
+                if (IsEquilateral())
                 {
-                    isosceles = true;
-                    if (a == b && a == c)
-                    {
-                        output = "Треугольник равносторонний!";
-                    }
-                    if (a - aPif < epsilon || b - bPif <= epsilon || c - cPif <= epsilon)
-                    {
-                        output = "Треугольник прямоугольный и равнобедренный!!";
-                    }
-                    else
-                    {
-                        output = "Треугольник равнобедренный!";
-                    }
+                    info += "равносторонним";
                 }
-                if ((a - aPif < epsilon || b - bPif <= epsilon || c - cPif <= epsilon) && (isosceles == false))
+                else if (IsIsosceles())
                 {
-                    output = "Треугольник прямоугольный!";
-                }
-            }
-            ReadKey();
-            WriteLine(output);
-        }
-
-
-        // Статический метод для безопасной конвертации (string -> double) без вылета программы.
-        // Возвращает true, если удалось перевести число, иначе false.
-        // В out-параметр возвращает саму строку после преобразования или double.NaN.
-        static bool SaveConvert(string str, out double result)
-        {
-            if (double.TryParse(str.Replace(".", ","), out double none))
-            {
-                result = double.Parse(str.Replace(".", ","));
-                return true;
-            }
-            else
-            {
-                result = double.NaN;
-                return false;
-            }
-        }
-
-
-        // Статический метод для постоянного чтения пользовательского ввода до тех пор, пока не будет введено валидное число.
-        static double RepeatRead()
-        {
-            while (true)
-            {
-                if (SaveConvert(ReadLine(), out double result))
-                {
-                    return result;
+                    info += "равнобедренным";
                 }
                 else
                 {
-                    WriteLine("Введенное значение не является числом! Повторите попытку.");
+                    info += "разносторонним";
+                }
+
+                if (IsRightTriangle())
+                {
+                    info += ", прямоугольным";
+                }
+
+                return info + ".";
+            }
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            double a = GetNumber("Введите длину первой стороны: ");
+            double b = GetNumber("Введите длину второй стороны: ");
+            double c = GetNumber("Введите длину третьей стороны: ");
+
+            Triangle triangle = new Triangle(a, b, c);
+
+            Console.WriteLine("\nРезультат проверки:");
+            Console.WriteLine(triangle.GetInfo());
+
+            if (triangle.IsValid())
+            {
+                Console.WriteLine("\nДополнительная информация:");
+                Console.WriteLine($"Стороны: a = {a}, b = {b}, c = {c}");
+            }
+
+            Console.WriteLine("\nНажмите любую клавишу для выхода...");
+            Console.ReadKey();
+        }
+
+
+        static double GetNumber(string steer)
+        {
+            double number = 0;
+            bool isValid = false;
+
+            while (!isValid)
+            {
+                Console.Write(steer);
+                string input = Console.ReadLine();
+
+                try
+                {
+                    number = double.Parse(input);
+                    if (number <= 0)
+                    {
+                        Console.WriteLine("Неверный ввод! Стороны треугольника должны быть положительными!");
+                    }
+                    else
+                    {
+                        isValid = true;
+                    }
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Ошибка: Введите корректное число!");
+                }
+                catch (OverflowException)
+                {
+                    Console.WriteLine("Ошибка: Число слишком большое или слишком маленькое, введите корректное число!");
                 }
             }
+
+            return number;
         }
     }
 }
