@@ -17,17 +17,18 @@ namespace ConsoleAppEdu
             double b = RepeatRead();
             double c = RepeatRead();
             double t1, t2, x1, x2;
+            string output = "";
 
             if (a == 0)
             {
                 x1 = Sqrt(-c / b);
                 if (x1 != 0)
                 {
-                    WriteLine($"Корни уравнения: ±{x1}");
+                    output = $"Корни уравнения: ±{x1}";
                 }
                 else
                 {
-                    WriteLine("Корень уравнения: 0");
+                    output = "Корень уравнения: 0";
                 }
             }
 
@@ -42,35 +43,37 @@ namespace ConsoleAppEdu
                     x2 = Sqrt(t2);
                     if (t1 > 0 && t2 > 0)
                     {
-                        WriteLine($"Корни уравнения: ±{x1}, ±{x2}");
+                        output = $"Корни уравнения: ±{x1}, ±{x2}";
                     }
                     else if (t1 == 0)
                     {
-                        WriteLine($"Корни уравнения: 0, ±{x2}");
+                        output = $"Корни уравнения: 0, ±{x2}";
                     }
                     else if (t2 == 0)
                     {
-                        WriteLine($"Корни уравнения: ±{x1}, 0");
+                        output = $"Корни уравнения: ±{x1}, 0";
                     }
                     else if (t1 < 0)
                     {
-                        WriteLine($"Корни уравнения: ±{x2}");
+                        output = $"Корни уравнения: ±{x2}";
                     }
                     else if (t2 < 0)
                     {
-                        WriteLine($"Корни уравнения: ±{x1}");
+                        output = $"Корни уравнения: ±{x1}";
                     }
                     else if (t1 < 0 && t2 < 0)
                     {
-                        WriteLine("Корней нет!");
+                        output = "Корней нет!";
                     }
                 }
 
                 else
                 {
-                    WriteLine("Корней нет!");
+                    output = "Корней нет!";
                 }
             }
+            WriteLine(output);
+            ReadKey();
         }
 
 
