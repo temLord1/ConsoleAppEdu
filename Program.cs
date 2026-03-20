@@ -15,61 +15,44 @@ namespace ConsoleAppEdu
             Console.WriteLine("Введите номер места [1; 54]: ");
             while (!cont)
             {
-                string i = Console.ReadLine();
-                bool boo = int.TryParse(i, out int input);
+                bool i = int.TryParse(Console.ReadLine(), out int input);
+                if (!i)
+                {
+                    Console.WriteLine("Неверное значение места!");
+                    continue;
+                }
+
                 if (input <= 36)
                 {
-                    int a = 1;
-                    int b = 4;
-                    int block = 1;
-                    while (output.Length == 0)
+                    int block = (input - 1) / 4 + 1;
+                    output += $"{block}к";
+                    if (input % 2 == 0)
                     {
-                        output += Place_finder(input, a, b, block);
-                        a = a + 4;
-                        b = b + 4;
-                        block = block + 1;
+                        output += "в";
+                    }
+                    else
+                    {
+                        output += "н";
                     }
                     cont = true;
                 }
                 if (input > 36)
                 {
-                    int a = 37;
-                    int b = 38;
-                    int block = 9;
-                    while (output.Length == 0)
+                    int block = (54 - input) / 2 + 1;
+                    output += $"{block}б";
+                    if (input % 2 == 0)
                     {
-                        output += Place_finder(input, a, b, block);
-                        a = a + 2;
-                        b = b + 2;
-                        block = block - 1;
+                        output += "в";
+                    }
+                    else
+                    {
+                        output += "н";
                     }
                     cont = true;
                 }
             }
             Console.Write($"{output}\n\nНажмите любую клавишу для выхода...");
             Console.ReadKey();
-        }
-
-        static string Place_finder(int input, int a, int b, int block)
-        {
-            string output = "";
-            if (input >= a && input <= b)
-            {
-                output += $"{block}к";
-                if (input % 2 == 0)
-                {
-                    output += "в";
-                }
-                else
-                {
-                    output += "н";
-                }
-                return output;
-            }
-            else
-            {
-                return "";
-            }
         }
     }
 }
