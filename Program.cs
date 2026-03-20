@@ -10,13 +10,12 @@ namespace ConsoleAppEdu
     {
         static void Main(string[] args)
         {
-            string output = $"";
-            bool cont = false;
             Console.WriteLine("Введите номер места [1; 54]: ");
-            while (!cont)
+            while (true)
             {
+                string output = "";
                 bool i = int.TryParse(Console.ReadLine(), out int input);
-                if (!i)
+                if (!i || input > 54 || input < 1)
                 {
                     Console.WriteLine("Неверное значение места!");
                     continue;
@@ -34,8 +33,8 @@ namespace ConsoleAppEdu
                     {
                         output += "н";
                     }
-                    cont = true;
                 }
+
                 if (input > 36)
                 {
                     int block = (54 - input) / 2 + 1;
@@ -48,11 +47,10 @@ namespace ConsoleAppEdu
                     {
                         output += "н";
                     }
-                    cont = true;
                 }
+
+                Console.WriteLine($"Введенное место: {output}");
             }
-            Console.Write($"{output}\n\nНажмите любую клавишу для выхода...");
-            Console.ReadKey();
         }
     }
 }
