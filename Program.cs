@@ -10,43 +10,66 @@ namespace ConsoleAppEdu
     {
         static void Main(string[] args)
         {
-            string russian = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
-            string vowels = "аеёиоуыэюя";
-            string input = "";
-            bool isValid = false;
-
-            while (!isValid)
+            string output = $"";
+            bool cont = false;
+            Console.WriteLine("Введите номер места [1; 54]: ");
+            while (!cont)
             {
-                Console.Write("Введите символ: ");
-                try
+                string i = Console.ReadLine();
+                bool boo = int.TryParse(i, out int input);
+                if (input <= 36)
                 {
-                    char symbol = Char.ToLower(Convert.ToChar(Console.ReadLine()));
-                if (russian.Contains(Convert.ToString(symbol)))
+                    int a = 1;
+                    int b = 4;
+                    int block = 1;
+                    while (output.Length == 0)
+                    {
+                        output += Place_finder(input, a, b, block);
+                        a = a + 4;
+                        b = b + 4;
+                        block = block + 1;
+                    }
+                    cont = true;
+                }
+                if (input > 36)
                 {
-                    input += "Введенный символ - ";
-                    if (vowels.Contains(Convert.ToString(symbol)))
+                    int a = 37;
+                    int b = 38;
+                    int block = 9;
+                    while (output.Length == 0)
                     {
-                        input += "гласная ";
+                        output += Place_finder(input, a, b, block);
+                        a = a + 2;
+                        b = b + 2;
+                        block = block - 1;
                     }
-                    else
-                    {
-                        input += "согласная ";
-                    }
-                    input += "буква русского языка!";
-                    isValid = true;
+                    cont = true;
+                }
+            }
+            Console.Write($"{output}\n\nНажмите любую клавишу для выхода...");
+            Console.ReadKey();
+        }
+
+        static string Place_finder(int input, int a, int b, int block)
+        {
+            string output = "";
+            if (input >= a && input <= b)
+            {
+                output += $"{block}к";
+                if (input % 2 == 0)
+                {
+                    output += "в";
                 }
                 else
                 {
-                    Console.WriteLine("Этот символ не является русской буквой! ");
+                    output += "н";
                 }
-                }
-                catch (FormatException)
-                {
-                    Console.WriteLine("Некорректный ввод!");
-                }
+                return output;
             }
-            Console.Write($"{input}\n\nНажмите любую клавишу для выхода...");
-            Console.ReadKey();
+            else
+            {
+                return "";
+            }
         }
     }
 }
