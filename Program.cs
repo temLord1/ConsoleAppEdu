@@ -10,47 +10,56 @@ namespace ConsoleAppEdu
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Введите номер места [1; 54]: ");
             while (true)
             {
-                string output = "";
-                bool i = int.TryParse(Console.ReadLine(), out int input);
-                if (!i || input > 54 || input < 1)
+                double x = GetNumber("Введите значение x: ");
+                double sum = 0;
+                if (x > 0)
                 {
-                    Console.WriteLine("Неверное значение места!");
-                    continue;
-                }
-
-                if (input <= 36)
-                {
-                    int block = (input - 1) / 4 + 1;
-                    output += $"{block}к";
-                    if (input % 2 == 0)
+                    double a = Math.Ceiling(Math.Log(x));
+                    double b = Math.Floor(Math.Exp(x));
+                    if (b > 1e9)
                     {
-                        output += "в";
+                        Console.WriteLine("Введенное значение слишком большое для текущей задачи!");
                     }
                     else
                     {
-                        output += "н";
+                        Console.WriteLine($"Промежуток [{a};{b}]");
+                        for (double i = a; i <= b; i++)
+                        {
+                            sum += Math.Pow(i, 2);
+                        }
                     }
                 }
-
-                if (input > 36)
+                else
                 {
-                    int block = (54 - input) / 2 + 1;
-                    output += $"{block}б";
-                    if (input % 2 == 0)
-                    {
-                        output += "в";
-                    }
-                    else
-                    {
-                        output += "н";
-                    }
+                    Console.WriteLine("Введенное значение невозможно! (x > 0)");
                 }
 
-                Console.WriteLine($"Введенное место: {output}");
+                Console.WriteLine($"Сумма квадратов всех чисел указаного диапазона: {sum}");
             }
+        }
+
+        static double GetNumber(string prompt)
+        {
+            double number = 0;
+            bool isValid = false;
+
+            while (!isValid)
+            {
+                Console.WriteLine(prompt);
+                string input = Console.ReadLine();
+                bool isNumber = Double.TryParse(input, out number);
+                if (isNumber)
+                {
+                    isValid = true;
+                }
+                else
+                {
+                    Console.WriteLine("Некорректный ввод!");
+                }
+            }
+            return number;
         }
     }
 }
