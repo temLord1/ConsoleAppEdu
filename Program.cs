@@ -9,19 +9,38 @@ namespace ConsoleAppEdu
             while (true)
             {
                 string output = "";
-                double num = GetNumber("Введите верхний предел суммирования: ");
+                double x = GetNumber("Введите x: ");
+                int n = Convert.ToInt32(GetNumber("Введите n: "));
                 double sum = 0;
-                for (int n = 0; n < num; n++)
+
+                if (n <= 58 && x <= 58)
                 {
-                    double result = 1 / (n * (n + 1) * (n + 2));
-                    sum += result;
+                    for (int i = 1; i <= n; i++)
+                    {
+                        sum += Math.Pow(-1, x) * (Math.Pow(x, i + 1) + Math.Pow(x, 3 * i)) / (Factorial(i) + 1);
+                    }
+
+                    double result = (1 / Factorial(n)) * sum;
+                    output += $"Результат вычислений: {result:F0}";
                 }
-                output += $"Сумма ряда равна {sum}";
+                else
+                {
+                    output += "Слишком большое значение!";
+                }
                 Console.WriteLine(output);
                 Console.ReadKey();
             }
         }
 
+        static double Factorial(double x)
+        {
+            double result = 1;
+            for (int i = 2; i <= x; i++)
+            {
+                result *= i;
+            }
+            return result;
+        }
         static double GetNumber(string prompt)
         {
             double number = 0;
