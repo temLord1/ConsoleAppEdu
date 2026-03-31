@@ -9,36 +9,29 @@ namespace ConsoleAppEdu
             while (true)
             {
                 string output = "";
-                double x = GetNumber("Введите координату x точки: ");
-                double y = GetNumber("Введите координату y точки: ");
+                double a = GetNumber("Введите верхний предел: ");
+                double b = GetNumber("Введите нижний предел: ");
+                double n = GetNumber("Введите количество разбиений: ");
+                double h = (b - a) / n;
+                double sum = 0;
 
-                // Проверяем, что x^2 + y^2 >= R^2 и подобная же проверка для второй окружности.
-                // Когда сумма квадратов больше радиуса, то точка вне окружности, когда меньше - внутри.
-                if ((Math.Pow(x, 2) + Math.Pow(y, 2) >= 9) && (Math.Pow(x, 2) + Math.Pow(y, 2) <= 144))
+                for (int i = 0; i < n; i++)
                 {
-                    // Чтобы понять, что точка внутри ветвей парраболы, находим значение f(x) и сравниваем его
-                    // с данным y. Пока y >= f(x), точка будет выше ветвей парраболы. А так как a > 0, то внутри ветвей.
-                    // Предположил, что график парраболы - f(x) = x^2 - 20.
-                    double f = Math.Pow(x, 2) - 20;
-                    if (y >= f)
-                    {
-                        output += "Точка принадлежит заштрихованной области!";
-                    }
-                    else
-                    {
-                        output += "Точка не принадлежит выделенной области.";
-                    }
-                }
-                else
-                {
-                    output += "Точка не принадлежит выделенной области.";
+                    double x = a + i * h;
+                    sum += F(x);
                 }
 
+                output += $"Результат интегрирования: {sum*h}";
+            
                 Console.WriteLine($"{output}\n");
                 Console.ReadKey();
             }
         }
 
+        static double F(double x) 
+        {
+            return Math.Log(2 + Math.Sin(x));
+        }
 
         static double GetNumber(string prompt)
         {
@@ -47,7 +40,7 @@ namespace ConsoleAppEdu
 
             while (!isValid)
             {
-                Console.WriteLine(prompt);
+                Console.Write(prompt);
                 string input = Console.ReadLine();
                 bool isNumber = Double.TryParse(input, out number);
                 if (isNumber)
