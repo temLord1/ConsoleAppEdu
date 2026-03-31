@@ -9,28 +9,17 @@ namespace ConsoleAppEdu
             while (true)
             {
                 string output = "";
-                double a = GetNumber("Введите верхний предел: ");
-                double b = GetNumber("Введите нижний предел: ");
-                double n = GetNumber("Введите количество разбиений: ");
-                double h = (b - a) / n;
+                double num = GetNumber("Введите верхний предел суммирования: ");
                 double sum = 0;
-
-                for (int i = 0; i < n; i++)
+                for (int n = 0; n < num; n++)
                 {
-                    double x = a + i * h;
-                    sum += F(x);
+                    double result = 1 / (n * (n + 1) * (n + 2));
+                    sum += result;
                 }
-
-                output += $"Результат интегрирования: {sum*h}";
-            
-                Console.WriteLine($"{output}\n");
+                output += $"Сумма ряда равна {sum}";
+                Console.WriteLine(output);
                 Console.ReadKey();
             }
-        }
-
-        static double F(double x) 
-        {
-            return Math.Log(2 + Math.Sin(x));
         }
 
         static double GetNumber(string prompt)
