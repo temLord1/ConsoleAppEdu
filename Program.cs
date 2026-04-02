@@ -1,66 +1,45 @@
 ﻿using System;
+using System.Numerics;
 
 namespace ConsoleAppEdu
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            while (true)
+            double totalSum = 0;
+            int n = 5;
+            int maxIterations = 200;
+
+            // Для i = 1
+            BigInteger factorial = 24;
+
+            Console.WriteLine($"Начинаем расчет ряда. Вывод каждые {n} шагов:\n");
+
+            for (int i = 1; i <= maxIterations; i++)
             {
-                string output = "";
-                double x = GetNumber("Введите x: ");
-                int n = Convert.ToInt32(GetNumber("Введите n: "));
-                double sum = 0;
+                BigInteger numerator = BigInteger.Pow(3, i + 2);
 
-                if (n <= 58 && x <= 58)
-                {
-                    for (int i = 1; i <= n; i++)
-                    {
-                        sum += Math.Pow(-1, x) * (Math.Pow(x, i + 1) + Math.Pow(x, 3 * i)) / (Factorial(i) + 1);
-                    }
+                // Так как BigInteger может быть гигантским, используем логарифмы для безопасного перевода в double (Exp(Log(a) - Log(b)))
+                // --(Данная часть написана не самостоятельно, но способ избежать переполнения интересный)--
+                double term = Math.Exp(BigInteger.Log(numerator) - BigInteger.Log(factorial));
 
-                    double result = (1 / Factorial(n)) * sum;
-                    output += $"Результат вычислений: {result:F0}";
-                }
-                else
+                if (term < 1e-20 && i > 50) break;
+
+                totalSum += term;
+
+                if (i % n == 0)
                 {
-                    output += "Слишком большое значение!";
+                    Console.WriteLine($"Шаг {i}: Текущая сумма = {totalSum:F15}");
                 }
-                Console.WriteLine(output);
-                Console.ReadKey();
+
+                factorial *= (i + 4);
             }
-        }
 
-        static double Factorial(double x)
-        {
-            double result = 1;
-            for (int i = 2; i <= x; i++)
-            {
-                result *= i;
-            }
-            return result;
-        }
-        static double GetNumber(string prompt)
-        {
-            double number = 0;
-            bool isValid = false;
+            Console.WriteLine("\n" + new string('-', 30));
+            Console.WriteLine($"Итоговая сумма: {totalSum:F15}");
 
-            while (!isValid)
-            {
-                Console.Write(prompt);
-                string input = Console.ReadLine();
-                bool isNumber = Double.TryParse(input, out number);
-                if (isNumber)
-                {
-                    isValid = true;
-                }
-                else
-                {
-                    Console.WriteLine("Некорректный ввод!");
-                }
-            }
-            return number;
+            Console.ReadKey();
         }
     }
 }
