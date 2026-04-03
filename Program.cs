@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using DecimalMath;
 
 namespace ConsoleAppEdu
 {
@@ -7,53 +8,33 @@ namespace ConsoleAppEdu
     {
         static void Main()
         {
-            // 510510, 9699690, 223092870, 6469693230
-            long n = GetNumber("Введите N: ");
-            string output = $"Представление числа {n} через простые числа:\n";
+            decimal totalSum = 0;
+            decimal epsilon = 1e-28m;
 
-            while (n != 1)
+            // Для i = 1
+            int i = 1;
+            BigInteger factorial = 24;
+            decimal numerator = 27;
+            decimal term = DecimalEx.Exp(DecimalEx.Log(numerator) - (decimal)BigInteger.Log(factorial));
+
+            while (term > epsilon)
             {
-                for (long i = 2; i <= n; i++)
-                {
-                    if (n % i == 0)
-                    {
-                        if (n != i)
-                        {
-                            output += $"{i} * ";
-                        }
-                        else
-                        {
-                            output += $"{i}";
-                        }
+                numerator = DecimalEx.Pow(3, i + 2);
+                term = DecimalEx.Exp(DecimalEx.Log(numerator) - (decimal)BigInteger.Log(factorial));
 
-                        n = n / i;
-                    }
-                }
+                totalSum += term;
+
+                Console.WriteLine($"Шаг {i}: Текущая сумма = {totalSum:F30}");
+
+                // ((i + 1) + 3)! = (i + 4)! = (i + 3)! * (i + 4)
+                factorial *= (i + 4);
+                i++;
             }
 
-            Console.WriteLine(output);
+            Console.WriteLine("\n" + new string('-', 30));
+            Console.WriteLine($"Итоговая сумма: {totalSum:F30}");
+
             Console.ReadKey();
-        }
-        static long GetNumber(string prompt)
-        {
-            long number = 0;
-            bool isValid = false;
-
-            while (!isValid)
-            {
-                Console.Write(prompt);
-                string input = Console.ReadLine();
-                bool isNumber = long.TryParse(input, out number);
-                if (isNumber)
-                {
-                    isValid = true;
-                }
-                else
-                {
-                    Console.WriteLine("Некорректный ввод!");
-                }
-            }
-            return number;
         }
     }
 }
