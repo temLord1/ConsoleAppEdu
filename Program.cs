@@ -7,39 +7,53 @@ namespace ConsoleAppEdu
     {
         static void Main()
         {
-            double totalSum = 0;
-            int n = 5;
-            int maxIterations = 200;
+            // 510510, 9699690, 223092870, 6469693230
+            long n = GetNumber("Введите N: ");
+            string output = $"Представление числа {n} через простые числа:\n";
 
-            // Для i = 1
-            BigInteger factorial = 24;
-
-            Console.WriteLine($"Начинаем расчет ряда. Вывод каждые {n} шагов:\n");
-
-            for (int i = 1; i <= maxIterations; i++)
+            while (n != 1)
             {
-                BigInteger numerator = BigInteger.Pow(3, i + 2);
-
-                // Так как BigInteger может быть гигантским, используем логарифмы для безопасного перевода в double (Exp(Log(a) - Log(b)))
-                // --(Данная часть написана не самостоятельно, но способ избежать переполнения интересный)--
-                double term = Math.Exp(BigInteger.Log(numerator) - BigInteger.Log(factorial));
-
-                if (term < 1e-20 && i > 50) break;
-
-                totalSum += term;
-
-                if (i % n == 0)
+                for (long i = 2; i <= n; i++)
                 {
-                    Console.WriteLine($"Шаг {i}: Текущая сумма = {totalSum:F15}");
-                }
+                    if (n % i == 0)
+                    {
+                        if (n != i)
+                        {
+                            output += $"{i} * ";
+                        }
+                        else
+                        {
+                            output += $"{i}";
+                        }
 
-                factorial *= (i + 4);
+                        n = n / i;
+                    }
+                }
             }
 
-            Console.WriteLine("\n" + new string('-', 30));
-            Console.WriteLine($"Итоговая сумма: {totalSum:F15}");
-
+            Console.WriteLine(output);
             Console.ReadKey();
+        }
+        static long GetNumber(string prompt)
+        {
+            long number = 0;
+            bool isValid = false;
+
+            while (!isValid)
+            {
+                Console.Write(prompt);
+                string input = Console.ReadLine();
+                bool isNumber = long.TryParse(input, out number);
+                if (isNumber)
+                {
+                    isValid = true;
+                }
+                else
+                {
+                    Console.WriteLine("Некорректный ввод!");
+                }
+            }
+            return number;
         }
     }
 }
